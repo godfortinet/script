@@ -29,7 +29,8 @@ def main(config_path, num_of_cycles):
     
 
 def pdu_outlet_reboot(pdu_IP, username, password, pdu_ID_or_group, log_file):
-    cmd = f'../modules/pdu_outlet_reboot.exp {pdu_IP} {username} {password} {pdu_ID_or_group} >> {log_file}'
+    cmd = f'../pdu_outlet_reboot.exp {pdu_IP} {username} {password} {pdu_ID_or_group} >> {log_file}'
+    #cmd = f'../modules/pdu_outlet_reboot.exp {pdu_IP} {username} {password} {pdu_ID_or_group} >> {log_file}'
     #cmd = f'C:\Users\fengy\Downloads\FOS_utils\FOS_utils\modules\pdu_outlet_reboot.exp {pdu_IP} {username} {password} {pdu_ID_or_group} >> {log_file}'
     
     execute_shell_cli(cmd)
