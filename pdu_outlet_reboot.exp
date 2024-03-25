@@ -1,0 +1,47 @@
+#!/usr/bin/expect 
+#Author: Wuyang Liu
+
+# Document: works on 
+# 1. Lab PDU(Sentry Switched PDU, Lab203)
+# 2. small PDU(apc5457CF)
+# 3. Chatsworth PDU (Lab189)
+
+set timeout -1
+
+set pdu_server [lindex $argv 0]
+set username [lindex $argv 1]
+set password [lindex $argv 2]
+set outlet_ID [lindex $argv 3]
+
+spawn ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa $username@$pdu_server
+
+expect {
+    -re {yes/no/\[fingerprint\]} {
+        send -- "yes\n"
+        expect -re {[Pp]assword:}
+        send -- "$password\r"
+    }
+    -re {[Pp]assword:} {
+        send -- "$password\r"
+    }
+}
+
+sleep 0.05
+expect {
+    -re {Switched PDU:} {
+        send -- "reboot $outlet_ID\n"
+    }
+    -re {apc>} {
+        send -- "olReboot $outlet_ID\n"
+    }
+    -re {.+\([0-9]\):} {
+        send -- "elevate\n"
+        expect -re {#}
+        send -- "control outlet $outlet_ID 0 Reset\n"
+    }
+}
+
+sleep 0.05
+send "quit\n"
+
+expect eof

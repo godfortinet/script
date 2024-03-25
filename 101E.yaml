@@ -1,0 +1,5 @@
+local_output_file: dut.log
+PDU_IP: "10.65.131.22"
+PDU_username: admin
+PDU_password: ByDaPower0fGraysku11
+outlet_ID: 5
